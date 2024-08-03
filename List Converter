@@ -1,0 +1,82 @@
+# Add old style list here
+list_to_change = """
+ ['subwrx'] = {
+        ['name'] = '2004 Subaru Impreza WRX STI',
+        ['brand'] = 'subaru',
+        ['model'] = 'subwrx',
+        ['price'] = 130000,
+        ['category'] = 'subaru',
+        ['categoryLabel'] = 'subaru',
+        ['hash'] = `subwrx`,
+        ['shop'] = 'luxury',
+    },
+    ['svx'] = {
+        ['name'] = '1996 Subaru Alcyone SVX',
+        ['brand'] = 'subaru',
+        ['model'] = 'svx',
+        ['price'] = 35000,
+        ['category'] = 'subaru',
+        ['categoryLabel'] = 'subaru',
+        ['hash'] = `svx`,
+        ['shop'] = 'luxury',
+    },
+    ['gsxr19'] = {
+        ['name'] = '2019 Suzuki GSX-R1000R',
+        ['brand'] = 'suzuki',
+        ['model'] = 'gsxr19',
+        ['price'] = 28000,
+        ['category'] = 'suzuki',
+        ['categoryLabel'] = 'suzuki',
+        ['hash'] = `gsxr19`,
+        ['shop'] = 'luxury',
+    },
+"""
+# Function to change 1 entry into new format
+def one_entry(entry):
+    entry = entry.strip().strip("{").strip("}").strip()
+    entry = entry.replace('[', '').replace(']', '').replace('`', '')
+    lines = entry.split('\n')
+    item = {}
+    for line in lines:
+        line = line.strip()
+        if '=' in line:
+            key, value = line.split('=', 1)
+            key = key.strip().strip("'")
+            value = value.strip().strip("'")
+            item[key] = value
+    return item
+
+# Function to change multiple entries 
+def multi_entries(lua_string):
+    lua_entries = lua_string.strip().split('},')
+    parsed_entries = []
+    for entry in lua_entries:
+        if entry.strip():
+            parsed_entries.append(one_entry(entry + '}'))
+    return parsed_entries
+
+formatted_items = multi_entries(list_to_change)
+
+# Puts the list into the new format 
+formatted_strings = []
+for item in formatted_items:
+    new_format = {
+        'model': item['model'],
+        'name': item['name'],
+        'brand': 'Addon',
+        'price': 100000,
+        'category': 'Add-ons',
+        'type': 'automobile',
+        'shop': 'import'
+    }
+    
+    formatted_string = "{ model = '%s', name = '%s', brand = 'Addon', price = %d, category = 'Add-ons', type = 'automobile', shop = 'import' }," % (
+        new_format['model'],
+        new_format['name'],
+        new_format['price']
+    )
+    formatted_strings.append(formatted_string)
+
+# Outputs the list into the terminal
+for formatted_string in formatted_strings:
+    print(formatted_string)
