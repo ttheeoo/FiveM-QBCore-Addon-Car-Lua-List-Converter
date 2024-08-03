@@ -19,6 +19,10 @@ New format used in more up-to-date server versions (empty entry down below)
 
 This allows for quick and easy conversion of old style into new one to make old car packs/mods work with newwer server versions
 
+List goes into resources/[qb]/qb-core/shared/vehicles.lua
+
+Known 'problem': The conversion adds extra commas that need to be removed for the list to work. Hasn't bothered me enough to look further into it as it is easy to make it work.
+
 Written in Pyton
 
-Free to use and change to fit your needs.
+Free to use and change to fit your needs
